@@ -1,4 +1,6 @@
-﻿using System;
+﻿using frontend.Properties;
+using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -15,7 +17,7 @@ namespace frontend
         public SinhVien(string id)
         {
             InitializeComponent();
-            
+            updateInfo(id);
 
         }
 
@@ -31,12 +33,17 @@ namespace frontend
 
         private async void edit_Click(object sender, EventArgs e)
         {
-            
+            Phone.ReadOnly = false;
+            Email.ReadOnly = false;
+            Address.ReadOnly = false;
             save.BackColor =  System.Drawing.Color.ForestGreen;
         }
 
-        private void save_Click(object sender, EventArgs e)
+        private async void save_Click(object sender, EventArgs e)
         {
+            var result = await RestHelper.EditInfoSV(ID.Text,Phone.Text, Email.Text, Address.Text);
+            var final_result = JsonConvert.DeserializeObject<Project>(result);
+            if(final_result.name=="true") MessageBox.Show("Cập nhật thành công","", MessageBoxButtons.OK);
             save.BackColor = System.Drawing.Color.Tan;
         }
 
@@ -63,20 +70,48 @@ namespace frontend
 
         private void editNV_Click(object sender, EventArgs e)
         {
-            MessageBox.Show(comboBox3.SelectedItem.ToString());
+            MessageBox.Show(GV1.SelectedItem.ToString());
         }
 
         private void comboBox3_SelectedIndexChanged(object sender, EventArgs e)
         {
-            string gv = comboBox3.SelectedItem.ToString();
-            comboBox6.Items.Clear();
+            string gv = GV1.SelectedItem.ToString();
+            DeTai1.Items.Clear();
             object[] detai = {"Project 1",
             "Project 2",
             "Project 3",
             "Thực tập tốt nghiệp",
             "Đồ án tốt nghiệp"};
-            comboBox6.Items.AddRange(detai
+            DeTai1.Items.AddRange(detai
             );
+        }
+
+        private void name_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void logOut_Click(object sender, EventArgs e)
+        {
+            App app = new App();
+            app.Show();
+            this.Hide();
+        }
+
+        private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void dataGridView2_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
+
+        private void showTeacher_Click(object sender, EventArgs e)
+        {
+            DataGridView listTeacher = new DataGridView();
+
         }
     }
 }

@@ -1,4 +1,10 @@
 ﻿
+using frontend.Properties;
+using Nancy.Json;
+using Newtonsoft.Json;
+using System;
+using System.Windows.Forms;
+
 namespace frontend
 {
     partial class SinhVien
@@ -21,6 +27,28 @@ namespace frontend
             }
             base.Dispose(disposing);
         }
+        private async void updateInfo(string id)
+        {
+            try {
+                var responce = await RestHelper.GetInfoSV(id);
+                JavaScriptSerializer js = new JavaScriptSerializer();
+                DataStudent[] persons = js.Deserialize<DataStudent[]>(responce);
+                //textBox1.Text = RestHelper.BeautifyJson(responce);
+                //var data_final = JsonConvert.DeserializeObject<SingleUser>(responce);
+
+                Name.Text = persons[0].Name;
+                Class.Text = persons[0].Class;
+                ID.Text = persons[0].ID;
+                Address.Text = persons[0].Address;
+                Phone.Text = persons[0].Phone;
+                Email.Text = persons[0].Email;
+            }
+            catch(Exception a)
+            {
+                MessageBox.Show("Lỗi nhận data về thông tin sinh viên: ");
+            }
+    
+        }
 
         #region Windows Form Designer generated code
 
@@ -28,35 +56,36 @@ namespace frontend
         /// Required method for Designer support - do not modify
         /// the contents of this method with the code editor.
         /// </summary>
-        private void InitializeComponent()
+        private async void InitializeComponent()
         {
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.textBox6 = new System.Windows.Forms.TextBox();
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.Phone = new System.Windows.Forms.TextBox();
+            this.Email = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
-            this.textBox5 = new System.Windows.Forms.TextBox();
-            this.textBox4 = new System.Windows.Forms.TextBox();
-            this.textBox3 = new System.Windows.Forms.TextBox();
-            this.textBox2 = new System.Windows.Forms.TextBox();
+            this.Name = new System.Windows.Forms.TextBox();
+            this.Address = new System.Windows.Forms.TextBox();
+            this.Class = new System.Windows.Forms.TextBox();
+            this.ID = new System.Windows.Forms.TextBox();
             this.logOut = new CustomButton.VBButton();
             this.save = new CustomButton.VBButton();
             this.edit = new CustomButton.VBButton();
             this.changePassword = new CustomButton.VBButton();
             this.tabPage2 = new System.Windows.Forms.TabPage();
-            this.comboBox6 = new System.Windows.Forms.ComboBox();
-            this.comboBox5 = new System.Windows.Forms.ComboBox();
-            this.comboBox4 = new System.Windows.Forms.ComboBox();
+            this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.DeTai1 = new System.Windows.Forms.ComboBox();
+            this.DeTai3 = new System.Windows.Forms.ComboBox();
+            this.DeTai2 = new System.Windows.Forms.ComboBox();
             this.label11 = new System.Windows.Forms.Label();
-            this.comboBox3 = new System.Windows.Forms.ComboBox();
-            this.comboBox2 = new System.Windows.Forms.ComboBox();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.GV1 = new System.Windows.Forms.ComboBox();
+            this.GV3 = new System.Windows.Forms.ComboBox();
+            this.GV2 = new System.Windows.Forms.ComboBox();
             this.showTeacher = new CustomButton.VBButton();
             this.saveNV = new CustomButton.VBButton();
             this.editNV = new CustomButton.VBButton();
@@ -73,6 +102,7 @@ namespace frontend
             this.tabPage1.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.tabPage2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
             // tabControl1
@@ -106,18 +136,18 @@ namespace frontend
             // 
             // groupBox1
             // 
-            this.groupBox1.Controls.Add(this.textBox6);
-            this.groupBox1.Controls.Add(this.textBox1);
+            this.groupBox1.Controls.Add(this.Phone);
+            this.groupBox1.Controls.Add(this.Email);
             this.groupBox1.Controls.Add(this.label4);
             this.groupBox1.Controls.Add(this.label6);
             this.groupBox1.Controls.Add(this.label5);
             this.groupBox1.Controls.Add(this.label3);
             this.groupBox1.Controls.Add(this.label2);
             this.groupBox1.Controls.Add(this.label1);
-            this.groupBox1.Controls.Add(this.textBox5);
-            this.groupBox1.Controls.Add(this.textBox4);
-            this.groupBox1.Controls.Add(this.textBox3);
-            this.groupBox1.Controls.Add(this.textBox2);
+            this.groupBox1.Controls.Add(this.Name);
+            this.groupBox1.Controls.Add(this.Address);
+            this.groupBox1.Controls.Add(this.Class);
+            this.groupBox1.Controls.Add(this.ID);
             this.groupBox1.Location = new System.Drawing.Point(6, 26);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(1000, 328);
@@ -126,21 +156,21 @@ namespace frontend
             this.groupBox1.Text = "Thông tin cá nhân";
             this.groupBox1.Enter += new System.EventHandler(this.groupBox1_Enter);
             // 
-            // textBox6
+            // Phone
             // 
-            this.textBox6.Location = new System.Drawing.Point(457, 227);
-            this.textBox6.Name = "textBox6";
-            this.textBox6.ReadOnly = true;
-            this.textBox6.Size = new System.Drawing.Size(337, 31);
-            this.textBox6.TabIndex = 13;
+            this.Phone.Location = new System.Drawing.Point(457, 227);
+            this.Phone.Name = "Phone";
+            this.Phone.ReadOnly = true;
+            this.Phone.Size = new System.Drawing.Size(337, 31);
+            this.Phone.TabIndex = 13;
             // 
-            // textBox1
+            // Email
             // 
-            this.textBox1.Location = new System.Drawing.Point(457, 277);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.ReadOnly = true;
-            this.textBox1.Size = new System.Drawing.Size(337, 31);
-            this.textBox1.TabIndex = 12;
+            this.Email.Location = new System.Drawing.Point(457, 277);
+            this.Email.Name = "Email";
+            this.Email.ReadOnly = true;
+            this.Email.Size = new System.Drawing.Size(337, 31);
+            this.Email.TabIndex = 12;
             // 
             // label4
             // 
@@ -198,37 +228,38 @@ namespace frontend
             this.label1.TabIndex = 5;
             this.label1.Text = "Họ và tên";
             // 
-            // textBox5
+            // Name
             // 
-            this.textBox5.Location = new System.Drawing.Point(457, 30);
-            this.textBox5.Name = "textBox5";
-            this.textBox5.ReadOnly = true;
-            this.textBox5.Size = new System.Drawing.Size(337, 31);
-            this.textBox5.TabIndex = 4;
+            this.Name.Location = new System.Drawing.Point(457, 30);
+            this.Name.Name = "Name";
+            this.Name.ReadOnly = true;
+            this.Name.Size = new System.Drawing.Size(337, 31);
+            this.Name.TabIndex = 4;
+            this.Name.TextChanged += new System.EventHandler(this.name_TextChanged);
             // 
-            // textBox4
+            // Address
             // 
-            this.textBox4.Location = new System.Drawing.Point(457, 177);
-            this.textBox4.Name = "textBox4";
-            this.textBox4.ReadOnly = true;
-            this.textBox4.Size = new System.Drawing.Size(337, 31);
-            this.textBox4.TabIndex = 3;
+            this.Address.Location = new System.Drawing.Point(457, 177);
+            this.Address.Name = "Address";
+            this.Address.ReadOnly = true;
+            this.Address.Size = new System.Drawing.Size(337, 31);
+            this.Address.TabIndex = 3;
             // 
-            // textBox3
+            // Class
             // 
-            this.textBox3.Location = new System.Drawing.Point(457, 127);
-            this.textBox3.Name = "textBox3";
-            this.textBox3.ReadOnly = true;
-            this.textBox3.Size = new System.Drawing.Size(337, 31);
-            this.textBox3.TabIndex = 2;
+            this.Class.Location = new System.Drawing.Point(457, 127);
+            this.Class.Name = "Class";
+            this.Class.ReadOnly = true;
+            this.Class.Size = new System.Drawing.Size(337, 31);
+            this.Class.TabIndex = 2;
             // 
-            // textBox2
+            // ID
             // 
-            this.textBox2.Location = new System.Drawing.Point(457, 77);
-            this.textBox2.Name = "textBox2";
-            this.textBox2.ReadOnly = true;
-            this.textBox2.Size = new System.Drawing.Size(337, 31);
-            this.textBox2.TabIndex = 1;
+            this.ID.Location = new System.Drawing.Point(457, 77);
+            this.ID.Name = "ID";
+            this.ID.ReadOnly = true;
+            this.ID.Size = new System.Drawing.Size(337, 31);
+            this.ID.TabIndex = 1;
             // 
             // logOut
             // 
@@ -247,6 +278,7 @@ namespace frontend
             this.logOut.Text = "Đăng xuất";
             this.logOut.TextColor = System.Drawing.Color.White;
             this.logOut.UseVisualStyleBackColor = false;
+            this.logOut.Click += new System.EventHandler(this.logOut_Click);
             // 
             // save
             // 
@@ -306,13 +338,14 @@ namespace frontend
             // 
             // tabPage2
             // 
-            this.tabPage2.Controls.Add(this.comboBox6);
-            this.tabPage2.Controls.Add(this.comboBox5);
-            this.tabPage2.Controls.Add(this.comboBox4);
+            this.tabPage2.Controls.Add(this.dataGridView1);
+            this.tabPage2.Controls.Add(this.DeTai1);
+            this.tabPage2.Controls.Add(this.DeTai3);
+            this.tabPage2.Controls.Add(this.DeTai2);
             this.tabPage2.Controls.Add(this.label11);
-            this.tabPage2.Controls.Add(this.comboBox3);
-            this.tabPage2.Controls.Add(this.comboBox2);
-            this.tabPage2.Controls.Add(this.comboBox1);
+            this.tabPage2.Controls.Add(this.GV1);
+            this.tabPage2.Controls.Add(this.GV3);
+            this.tabPage2.Controls.Add(this.GV2);
             this.tabPage2.Controls.Add(this.showTeacher);
             this.tabPage2.Controls.Add(this.saveNV);
             this.tabPage2.Controls.Add(this.editNV);
@@ -332,47 +365,56 @@ namespace frontend
             this.tabPage2.Text = "Đăng kí hướng dẫn";
             this.tabPage2.UseVisualStyleBackColor = true;
             // 
-            // comboBox6
+            // dataGridView1
             // 
-            this.comboBox6.FormattingEnabled = true;
-            this.comboBox6.Items.AddRange(new object[] {
+            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView1.Location = new System.Drawing.Point(454, 63);
+            this.dataGridView1.Name = "dataGridView1";
+            this.dataGridView1.RowTemplate.Height = 25;
+            this.dataGridView1.Size = new System.Drawing.Size(8, 8);
+            this.dataGridView1.TabIndex = 20;
+            // 
+            // DeTai1
+            // 
+            this.DeTai1.FormattingEnabled = true;
+            this.DeTai1.Items.AddRange(new object[] {
             "Project 1",
             "Project 2",
             "Project 3",
             "Thực tập tốt nghiệp",
             "Đồ án tốt nghiệp"});
-            this.comboBox6.Location = new System.Drawing.Point(490, 167);
-            this.comboBox6.Name = "comboBox6";
-            this.comboBox6.Size = new System.Drawing.Size(478, 31);
-            this.comboBox6.TabIndex = 19;
+            this.DeTai1.Location = new System.Drawing.Point(490, 167);
+            this.DeTai1.Name = "DeTai1";
+            this.DeTai1.Size = new System.Drawing.Size(478, 31);
+            this.DeTai1.TabIndex = 19;
             // 
-            // comboBox5
+            // DeTai3
             // 
-            this.comboBox5.FormattingEnabled = true;
-            this.comboBox5.Items.AddRange(new object[] {
+            this.DeTai3.FormattingEnabled = true;
+            this.DeTai3.Items.AddRange(new object[] {
             "Project 1",
             "Project 2",
             "Project 3",
             "Thực tập tốt nghiệp",
             "Đồ án tốt nghiệp"});
-            this.comboBox5.Location = new System.Drawing.Point(490, 332);
-            this.comboBox5.Name = "comboBox5";
-            this.comboBox5.Size = new System.Drawing.Size(478, 31);
-            this.comboBox5.TabIndex = 18;
+            this.DeTai3.Location = new System.Drawing.Point(490, 332);
+            this.DeTai3.Name = "DeTai3";
+            this.DeTai3.Size = new System.Drawing.Size(478, 31);
+            this.DeTai3.TabIndex = 18;
             // 
-            // comboBox4
+            // DeTai2
             // 
-            this.comboBox4.FormattingEnabled = true;
-            this.comboBox4.Items.AddRange(new object[] {
+            this.DeTai2.FormattingEnabled = true;
+            this.DeTai2.Items.AddRange(new object[] {
             "Project 1",
             "Project 2",
             "Project 3",
             "Thực tập tốt nghiệp",
             "Đồ án tốt nghiệp"});
-            this.comboBox4.Location = new System.Drawing.Point(490, 251);
-            this.comboBox4.Name = "comboBox4";
-            this.comboBox4.Size = new System.Drawing.Size(478, 31);
-            this.comboBox4.TabIndex = 17;
+            this.DeTai2.Location = new System.Drawing.Point(490, 251);
+            this.DeTai2.Name = "DeTai2";
+            this.DeTai2.Size = new System.Drawing.Size(478, 31);
+            this.DeTai2.TabIndex = 17;
             // 
             // label11
             // 
@@ -383,46 +425,46 @@ namespace frontend
             this.label11.TabIndex = 16;
             this.label11.Text = "Tên đề tài";
             // 
-            // comboBox3
+            // GV1
             // 
-            this.comboBox3.FormattingEnabled = true;
-            this.comboBox3.Items.AddRange(new object[] {
+            this.GV1.FormattingEnabled = true;
+            this.GV1.Items.AddRange(new object[] {
             "VST",
             "PVT",
             "PDT"});
-            this.comboBox3.Location = new System.Drawing.Point(181, 167);
-            this.comboBox3.Name = "comboBox3";
-            this.comboBox3.Size = new System.Drawing.Size(277, 31);
-            this.comboBox3.TabIndex = 15;
-            this.comboBox3.SelectedIndexChanged += new System.EventHandler(this.comboBox3_SelectedIndexChanged);
+            this.GV1.Location = new System.Drawing.Point(181, 167);
+            this.GV1.Name = "GV1";
+            this.GV1.Size = new System.Drawing.Size(277, 31);
+            this.GV1.TabIndex = 15;
+            this.GV1.SelectedIndexChanged += new System.EventHandler(this.comboBox3_SelectedIndexChanged);
             // 
-            // comboBox2
+            // GV3
             // 
-            this.comboBox2.FormattingEnabled = true;
-            this.comboBox2.Items.AddRange(new object[] {
+            this.GV3.FormattingEnabled = true;
+            this.GV3.Items.AddRange(new object[] {
             "Project 1",
             "Project 2",
             "Project 3",
             "Thực tập tốt nghiệp",
             "Đồ án tốt nghiệp"});
-            this.comboBox2.Location = new System.Drawing.Point(181, 332);
-            this.comboBox2.Name = "comboBox2";
-            this.comboBox2.Size = new System.Drawing.Size(277, 31);
-            this.comboBox2.TabIndex = 14;
+            this.GV3.Location = new System.Drawing.Point(181, 332);
+            this.GV3.Name = "GV3";
+            this.GV3.Size = new System.Drawing.Size(277, 31);
+            this.GV3.TabIndex = 14;
             // 
-            // comboBox1
+            // GV2
             // 
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Items.AddRange(new object[] {
+            this.GV2.FormattingEnabled = true;
+            this.GV2.Items.AddRange(new object[] {
             "Project 1",
             "Project 2",
             "Project 3",
             "Thực tập tốt nghiệp",
             "Đồ án tốt nghiệp"});
-            this.comboBox1.Location = new System.Drawing.Point(181, 251);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(277, 31);
-            this.comboBox1.TabIndex = 13;
+            this.GV2.Location = new System.Drawing.Point(181, 251);
+            this.GV2.Name = "GV2";
+            this.GV2.Size = new System.Drawing.Size(277, 31);
+            this.GV2.TabIndex = 13;
             // 
             // showTeacher
             // 
@@ -441,6 +483,7 @@ namespace frontend
             this.showTeacher.Text = "Hiển thị danh sách giảng vên";
             this.showTeacher.TextColor = System.Drawing.Color.White;
             this.showTeacher.UseVisualStyleBackColor = false;
+            this.showTeacher.Click += new System.EventHandler(this.showTeacher_Click);
             // 
             // saveNV
             // 
@@ -531,11 +574,10 @@ namespace frontend
             // 
             this.hocPhan.FormattingEnabled = true;
             this.hocPhan.Items.AddRange(new object[] {
-            "Project 1",
-            "Project 2",
-            "Project 3",
-            "Thực tập tốt nghiệp",
-            "Đồ án tốt nghiệp"});
+            "project1",
+            "project2",
+            "project3",
+            "projectFinal"});
             this.hocPhan.Location = new System.Drawing.Point(129, 38);
             this.hocPhan.Name = "hocPhan";
             this.hocPhan.Size = new System.Drawing.Size(228, 31);
@@ -581,7 +623,7 @@ namespace frontend
             this.ClientSize = new System.Drawing.Size(984, 711);
             this.Controls.Add(this.label10);
             this.Controls.Add(this.tabControl1);
-            this.Name = "SinhVien";
+           
             this.Text = "SinhVien";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.SinhVien_Close);
             this.tabControl1.ResumeLayout(false);
@@ -590,6 +632,7 @@ namespace frontend
             this.groupBox1.PerformLayout();
             this.tabPage2.ResumeLayout(false);
             this.tabPage2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -599,18 +642,18 @@ namespace frontend
         private System.Windows.Forms.TabControl tabControl1;
         private System.Windows.Forms.TabPage tabPage1;
         private System.Windows.Forms.TabPage tabPage2;
-        private System.Windows.Forms.TextBox textBox6;
-        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.TextBox Phone;
+        private System.Windows.Forms.TextBox Email;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.TextBox textBox5;
-        private System.Windows.Forms.TextBox textBox4;
-        private System.Windows.Forms.TextBox textBox3;
-        private System.Windows.Forms.TextBox textBox2;
+        private System.Windows.Forms.TextBox Name;
+        private System.Windows.Forms.TextBox Address;
+        private System.Windows.Forms.TextBox Class;
+        private System.Windows.Forms.TextBox ID;
         private CustomButton.VBButton save;
         private CustomButton.VBButton edit;
         private CustomButton.VBButton changePassword;
@@ -628,12 +671,13 @@ namespace frontend
         private System.Windows.Forms.TabPage tabPage3;
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.ComboBox comboBox6;
-        private System.Windows.Forms.ComboBox comboBox5;
-        private System.Windows.Forms.ComboBox comboBox4;
+        private System.Windows.Forms.ComboBox DeTai1;
+        private System.Windows.Forms.ComboBox DeTai3;
+        private System.Windows.Forms.ComboBox DeTai2;
         private System.Windows.Forms.Label label11;
-        private System.Windows.Forms.ComboBox comboBox3;
-        private System.Windows.Forms.ComboBox comboBox2;
-        private System.Windows.Forms.ComboBox comboBox1;
+        private System.Windows.Forms.ComboBox GV1;
+        private System.Windows.Forms.ComboBox GV3;
+        private System.Windows.Forms.ComboBox GV2;
+        private System.Windows.Forms.DataGridView dataGridView1;
     }
 }

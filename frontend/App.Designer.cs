@@ -44,7 +44,7 @@ namespace frontend
             this.userName.Name = "userName";
             this.userName.Size = new System.Drawing.Size(131, 26);
             this.userName.TabIndex = 1;
-            this.userName.TextChanged += new System.EventHandler(this.userName_TextChanged);
+           
             // 
             // password
             // 
